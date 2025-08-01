@@ -27,7 +27,7 @@ const createTransporter = () => {
     throw new Error('Email credentials not configured');
   }
   
-  const port = parseInt(env.SMTP_PORT || '587');
+  const port = parseInt(env.SMTP_PORT ?? '587');
   const secure = env.SMTP_SECURE === 'true' || port === 465;
   
   console.log(`📧 Configuring SMTP: ${env.SMTP_HOST}:${port} (secure: ${secure})`);
@@ -75,7 +75,7 @@ export const sendExamSubmission = async (examData: ExamSubmission) => {
     console.log('\n⏱️ Exam Details:');
     console.log(`   Registration ID: ${submissionData.registrationId}`);
     console.log(`   Time Spent: ${submissionData.timeSpent}`);
-    console.log(`   File: ${submissionData.fileName || 'No file uploaded'}`);
+    console.log(`   File: ${submissionData.fileName ?? 'No file uploaded'}`);
     console.log(`   Size: ${submissionData.fileSize}`);
     console.log(`   Submitted: ${submissionData.timestamp}`);
     console.log('🎓 =============================== 🎓\n');
@@ -98,11 +98,11 @@ export const sendExamSubmission = async (examData: ExamSubmission) => {
         <div style="padding: 30px; background-color: #f8f9fa;">
           <h2 style="color: #D97706; margin-bottom: 20px;">📝 Detalii Student</h2>
           <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #D97706;">
-            <p><strong>Nume:</strong> ${examData.registrationData?.firstName || 'N/A'} ${examData.registrationData?.lastName || 'N/A'}</p>
-            <p><strong>Email:</strong> ${examData.registrationData?.email || 'N/A'}</p>
-            <p><strong>Telefon:</strong> ${examData.registrationData?.phone || 'N/A'}</p>
+            <p><strong>Nume:</strong> ${examData.registrationData?.firstName ?? 'N/A'} ${examData.registrationData?.lastName ?? 'N/A'}</p>
+            <p><strong>Email:</strong> ${examData.registrationData?.email ?? 'N/A'}</p>
+            <p><strong>Telefon:</strong> ${examData.registrationData?.phone ?? 'N/A'}</p>
             ${examData.registrationData?.faculty ? `<p><strong>Facultate:</strong> ${examData.registrationData.faculty}</p>` : ''}
-            <p><strong>Tip Examen:</strong> ${examData.registrationData?.examType || 'N/A'}</p>
+            <p><strong>Tip Examen:</strong> ${examData.registrationData?.examType ?? 'N/A'}</p>
             ${examData.registrationData?.message ? `<p><strong>Mesaj:</strong> ${examData.registrationData.message}</p>` : ''}
           </div>
           
@@ -110,7 +110,7 @@ export const sendExamSubmission = async (examData: ExamSubmission) => {
           <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #1E40AF;">
             <p><strong>ID Înregistrare:</strong> ${examData.registrationId}</p>
             <p><strong>Timp Petrecut:</strong> ${timeSpentFormatted}</p>
-            <p><strong>Fișier Soluție:</strong> ${examData.fileName || 'Nu a fost încărcat niciun fișier'}</p>
+            <p><strong>Fișier Soluție:</strong> ${examData.fileName ?? 'Nu a fost încărcat niciun fișier'}</p>
             <p><strong>Data Submisiei:</strong> ${new Date().toLocaleString('ro-RO')}</p>
           </div>
           
@@ -141,7 +141,7 @@ export const sendExamSubmission = async (examData: ExamSubmission) => {
       html: htmlContent,
       attachments: examData.solutionFile ? [
         {
-          filename: examData.fileName || 'solutie-examen.pdf',
+          filename: examData.fileName ?? 'solutie-examen.pdf',
           content: examData.solutionFile.split(',')[1], // Remove data:application/pdf;base64, prefix
           encoding: 'base64'
         }

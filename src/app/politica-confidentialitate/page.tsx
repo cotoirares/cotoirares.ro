@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function PoliticaConfidentialitate() {
   return (
@@ -14,10 +15,12 @@ export default function PoliticaConfidentialitate() {
             {/* Logo */}
             <div className="mb-8">
               <Link href="/">
-                <img 
-                  src="/logo-zece-la-mate.png" 
-                  alt="Zece la Mate Logo" 
-                  className="mx-auto h-16 w-auto mb-6 hover:scale-110 transition-transform duration-300"
+                                      <Image 
+                        src="/logo-zece-la-mate.png" 
+                        alt="Zece la Mate Logo" 
+                        width={64}
+                        height={64}
+                        className="mx-auto h-16 w-auto mb-6 hover:scale-110 transition-transform duration-300"
                 />
               </Link>
             </div>
@@ -41,7 +44,7 @@ export default function PoliticaConfidentialitate() {
                 
                 <h2 className="text-2xl font-bold text-amber-400 mb-6">1. Introducere</h2>
                 <p className="text-gray-300 mb-8 leading-relaxed">
-                Bine ați venit pe site-ul "cotoirares.ro" care este deținut și operat de "RARES'S DIGITAL SOLUTIONS S.R.L.", companie identificata prin CUI: 48873530 și EUID: ROONRC.J12/4143/2023, avand sediul în Câmpia Turzii, strada Aurel Vlaicu nr. 43, 405100, jud. Cluj.
+                Bine ați venit pe site-ul &ldquo;cotoirares.ro&rdquo; care este deținut și operat de &ldquo;RARES&rsquo;S DIGITAL SOLUTIONS S.R.L.&rdquo;, companie identificata prin CUI: 48873530 și EUID: ROONRC.J12/4143/2023, avand sediul în Câmpia Turzii, strada Aurel Vlaicu nr. 43, 405100, jud. Cluj.
                 Noi ne angajăm să protejăm confidențialitatea datelor dumneavoastră personale și să respectăm legislația în vigoare privind protecția datelor.
                 </p>
 

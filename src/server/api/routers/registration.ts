@@ -4,7 +4,19 @@ import { sendExamSubmission, sendRegistrationConfirmation, sendRegistrationWitho
 
 // Simple in-memory storage for demo purposes
 // In production, you would use a database
-const registrations = new Map<string, any>();
+interface StoredRegistration {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  examType: "bac-mate-info" | "admitere" | "admitere-bac";
+  faculty?: string;
+  message?: string;
+  wantToTakeExam?: boolean;
+  registrationDate: Date;
+}
+
+const registrations = new Map<string, StoredRegistration>();
 
 export const registrationRouter = createTRPCRouter({
   register: publicProcedure
@@ -85,7 +97,7 @@ export const registrationRouter = createTRPCRouter({
         // Send email with exam submission and registration data
         await sendExamSubmission({
           registrationId: input.registrationId,
-          registrationData,
+          registrationData: registrationData ?? undefined,
           solutionFile: input.solutionFile,
           fileName: input.fileName,
           timeSpent: input.timeSpent,

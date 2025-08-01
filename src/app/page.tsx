@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { api } from "~/trpc/react";
 
 const TESTIMONIALS_DATA = [
@@ -58,9 +59,11 @@ const TESTIMONIALS_DATA = [
   }
 ];
 
+// Move symbols array outside component to avoid re-creating on every render
+const MATH_SYMBOLS = ['∑', '∫', 'π', '√', '∞', '∂', 'α', 'β', 'γ', 'δ', '≈', '≠', '≤', '≥', '±', '×', '÷', '²', '³', '∆'];
+
 // Floating Math Symbols Background Component
 function FloatingMathSymbols() {
-  const symbols = ['∑', '∫', 'π', '√', '∞', '∂', 'α', 'β', 'γ', 'δ', '≈', '≠', '≤', '≥', '±', '×', '÷', '²', '³', '∆'];
   const [symbolData, setSymbolData] = useState<Array<{
     symbol: string;
     left: number;
@@ -72,7 +75,7 @@ function FloatingMathSymbols() {
 
   useEffect(() => {
     // Generate random positions only on client side to avoid hydration mismatch
-    const data = symbols.map((symbol) => ({
+    const data = MATH_SYMBOLS.map((symbol) => ({
       symbol,
       left: Math.random() * 100,
       top: Math.random() * 100,
@@ -161,9 +164,9 @@ function TestimonialsCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const totalSlides = TESTIMONIALS_DATA.length;
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
-  };
+  }, [totalSlides]);
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
@@ -205,9 +208,11 @@ function TestimonialsCarousel() {
                   {/* Photo */}
                   <div className="flex-shrink-0">
                     <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-gradient-to-r from-amber-400 to-blue-400 p-1">
-                      <img 
+                      <Image 
                         src={testimonial.gender === 'female' ? '/girl.jpg' : '/boy.jpg'}
                         alt={testimonial.name}
+                        width={128}
+                        height={128}
                         className="w-full h-full rounded-full object-cover"
                         onError={(e) => {
                           // Fallback to initials if image fails to load
@@ -255,7 +260,7 @@ function TestimonialsCarousel() {
 
                     {/* Quote - Italic */}
                     <blockquote className="text-base lg:text-lg text-gray-300 italic leading-relaxed max-w-3xl mx-auto">
-                      "{testimonial.quote}"
+                      &ldquo;{testimonial.quote}&rdquo;
                     </blockquote>
                   </div>
                 </div>
@@ -370,7 +375,7 @@ export default function Home() {
     console.log("Calling registerMutation.mutate");
     registerMutation.mutate({
       ...formData,
-      examType: formData.examType as Exclude<typeof formData.examType, "">
+      examType: formData.examType
     });
   };
 
@@ -399,9 +404,11 @@ export default function Home() {
               <div className="text-center lg:text-left">
                 {/* Logo */}
                 <div className="mb-8 lg:mb-12">
-                  <img 
+                  <Image 
                     src="/logo-zece-la-mate.png" 
                     alt="Zece la Mate Logo" 
+                    width={128}
+                    height={128}
                     className="mx-auto lg:mx-0 h-24 lg:h-32 w-auto mb-6 hover:scale-110 transition-transform duration-300"
                   />
                 </div>
@@ -490,7 +497,7 @@ export default function Home() {
                 <p>
                 Am copilărit în Câmpia Turzii, unde am terminat Școala Gimnazială „Avram Iancu” ca șef de promoție și cu nota <span className="text-amber-400 font-semibold">10</span> la Matematică la Evaluarea Națională. Am urmat apoi cursurile Colegiului Național „Mihai Viteazul” Turda, specializare Mate-Info (intensiv Informatică), iar la Bacalaureat 2023 am obținut cea mai mare medie din zona Turda (<span className="text-amber-400 font-semibold">9.80</span>), cu nota <span className="text-amber-400 font-semibold">10</span> la Matematică M1. În prezent sunt student la Facultatea de Matematică și Informatică a UBB Cluj-Napoca, unde am fost admis cu media <span className="text-amber-400 font-semibold">10</span>. </p>
                 <p>
-                În liceu m-am implicat activ în proiecte sociale și în reprezentarea elevilor: am fost Președintele Consiliului Județean al Elevilor Cluj și Secretar executiv al Consiliului Național al Elevilor. Printre rezultatele care mă definesc se numără Premiul III la Olimpiada Județeană de Informatică (2021) și activitatea academică din prezent: cele două culegeri lansate pentru pregătirea admiterii la FMI UBB, participarea în comisiile științifice ale Olimpiadei Naționale de Informatică și a Concursului Național de Matematică și Informatică "Grigore Moisil" și problemele propuse pentru Olimpiada de Matematică. </p>
+                În liceu m-am implicat activ în proiecte sociale și în reprezentarea elevilor: am fost Președintele Consiliului Județean al Elevilor Cluj și Secretar executiv al Consiliului Național al Elevilor. Printre rezultatele care mă definesc se numără Premiul III la Olimpiada Județeană de Informatică (2021) și activitatea academică din prezent: cele două culegeri lansate pentru pregătirea admiterii la FMI UBB, participarea în comisiile științifice ale Olimpiadei Naționale de Informatică și a Concursului Național de Matematică și Informatică &ldquo;Grigore Moisil&rdquo; și problemele propuse pentru Olimpiada de Matematică. </p>
                 <p>
                 La 18 ani am ținut primul meu TED Talk, la TEDx Lunca Argeșului Youth 2023. Cred profund în egalitate și echitate, mai ales în educație, și asta se vede în modul în care lucrez cu elevii: clar, empatic și orientat spre progres real. Dacă vrei să te pregătești cu mine, vei găsi un mentor care îți respectă ritmul, dar te și provoacă să îți atingi potențialul.                </p>
               </div>

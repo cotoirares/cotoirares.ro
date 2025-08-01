@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { api } from "~/trpc/react";
 
 export default function ExamPage() {
@@ -52,35 +52,7 @@ export default function ExamPage() {
     return () => clearInterval(timer);
   }, [isExamStarted, isExamFinished]);
 
-  useEffect(() => {
-    if (isExamFinished && !isSubmitted) {
-      handleSubmitExam();
-    }
-  }, [isExamFinished, isSubmitted]);
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.type !== 'application/pdf') {
-        alert('Te rugăm să încarci doar fișiere PDF.');
-        return;
-      }
-      if (file.size > 10 * 1024 * 1024) { // 10MB limit
-        alert('Fișierul este prea mare. Dimensiunea maximă este 10MB.');
-        return;
-      }
-      setSelectedFile(file);
-    }
-  };
-
-  const handleSubmitExam = async () => {
+  const handleSubmitExam = useCallback(async () => {
     if (!selectedFile && !isExamFinished) {
       const confirmSubmit = confirm('Nu ai încărcat nicio soluție. Ești sigur că vrei să trimiți examenul gol?');
       if (!confirmSubmit) return;
@@ -101,11 +73,39 @@ export default function ExamPage() {
       await submitExamMutation.mutateAsync({
         registrationId,
         solutionFile: fileData as string | null,
-        fileName: selectedFile?.name || null,
+        fileName: selectedFile?.name ?? null,
         timeSpent: 3600 - timeLeft,
       });
     } catch (error) {
       console.error('Error submitting exam:', error);
+    }
+  }, [registrationId, selectedFile, isExamFinished, timeLeft, submitExamMutation]);
+
+  useEffect(() => {
+    if (isExamFinished && !isSubmitted) {
+      void handleSubmitExam();
+    }
+  }, [isExamFinished, isSubmitted, handleSubmitExam]);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        alert('Te rugăm să încarci doar fișiere PDF.');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        alert('Fișierul este prea mare. Dimensiunea maximă este 10MB.');
+        return;
+      }
+      setSelectedFile(file);
     }
   };
 

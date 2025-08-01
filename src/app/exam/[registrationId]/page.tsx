@@ -50,7 +50,7 @@ export default function ExamDetailsPage() {
             <div className="space-y-4 text-gray-300">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center text-black text-sm font-bold mt-0.5">1</div>
-                <p>Examenul are o durată de <strong className="text-white">60 de minute</strong> (1 oră) din momentul în care apeși "Începe Examenul".</p>
+                <p>Examenul are o durată de <strong className="text-white">60 de minute</strong> (1 oră) din momentul în care apeși &ldquo;Începe Examenul&rdquo;.</p>
               </div>
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center text-black text-sm font-bold mt-0.5">2</div>
