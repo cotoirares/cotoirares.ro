@@ -7,16 +7,9 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    AUTH_SECRET:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
-    AUTH_DISCORD_ID: process.env.NODE_ENV === "production"
-      ? z.string()
-      : z.string().optional(),
-    AUTH_DISCORD_SECRET: process.env.NODE_ENV === "production"
-      ? z.string()
-      : z.string().optional(),
+    AUTH_SECRET: z.string().optional(),
+    AUTH_DISCORD_ID: z.string().optional(),
+    AUTH_DISCORD_SECRET: z.string().optional(),
     EMAIL_USER: z.string().optional(),
     EMAIL_PASS: z.string().optional(),
     TEACHER_EMAIL: z.string().optional(),
