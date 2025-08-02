@@ -529,7 +529,7 @@ export default function Home() {
                     </div>
 
                     <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-2xl p-6 border border-amber-400/30">
-                      <div className="text-3xl font-bold text-amber-400 mb-2">Preț: 200 RON / ședință</div>
+                      <div className="text-3xl font-bold text-amber-400 mb-2">Preț: 150 RON / ședință</div>
                       <div className="text-blue-400 font-semibold">Durata unei ședințe este de 1h30 (o oră și jumătate).</div>
                     </div>
                     <p className="text-gray-300 text-center mb-6">Pentru fiecare ședință achitată se oferă factura fiscală.</p>
